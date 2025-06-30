@@ -11,7 +11,42 @@ export interface BlogPost {
   excerpt: string
   content: string
   readTime: string
+  category: string
 }
+
+export interface Category {
+  id: string
+  name: string
+  description: string
+  icon: string
+}
+
+export const categories: Category[] = [
+  {
+    id: 'tech',
+    name: '技术文章',
+    description: '技术见解、教程和最佳实践',
+    icon: '💻'
+  },
+  {
+    id: 'tools',
+    name: '工具与配置',
+    description: '开发工具、配置指南和效率提升',
+    icon: '🛠️'
+  },
+  {
+    id: 'demo',
+    name: '代码演示',
+    description: '实际代码示例和项目展示',
+    icon: '🚀'
+  },
+  {
+    id: 'bec',
+    name: '商务英语',
+    description: '初级商务英语备考',
+    icon: '📖'
+  }
+]
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
   if (!fs.existsSync(postsDirectory)) {
@@ -34,11 +69,17 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
         excerpt: data.excerpt || content.substring(0, 150) + '...',
         content,
         readTime: calculateReadTime(content),
+        category: data.category || 'life',
       }
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1))
 
   return posts
+}
+
+export async function getBlogPostsByCategory(categoryId: string): Promise<BlogPost[]> {
+  const allPosts = await getBlogPosts()
+  return allPosts.filter(post => post.category === categoryId)
 }
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
@@ -58,6 +99,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     excerpt: data.excerpt || content.substring(0, 150) + '...',
     content,
     readTime: calculateReadTime(content),
+    category: data.category || 'life',
   }
 }
 

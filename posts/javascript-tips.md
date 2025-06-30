@@ -1,7 +1,8 @@
 ---
-title: "10 个实用的 JavaScript 小技巧"
-date: "2024-01-25"
-excerpt: "分享 10 个在日常开发中非常实用的 JavaScript 技巧，帮助你写出更简洁、更高效的代码。"
+title: "JavaScript 实用技巧和最佳实践"
+date: "2024-02-15"
+excerpt: "分享一些实用的 JavaScript 技巧，帮助你写出更优雅、更高效的代码。"
+category: "tech"
 ---
 
 # 10 个实用的 JavaScript 小技巧

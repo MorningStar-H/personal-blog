@@ -6,17 +6,21 @@ interface CategoryPageProps {
   params: {
     id: string
   }
+  searchParams: {
+    subcategory?: string
+  }
 }
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const { id } = params
+  const { subcategory: selectedSubcategory } = searchParams
   const category = categories.find(cat => cat.id === id)
   
   if (!category) {
     notFound()
   }
 
-  const posts = await getBlogPostsByCategory(id)
+  const posts = await getBlogPostsByCategory(id, selectedSubcategory)
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -29,6 +33,33 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <p className="text-xl text-gray-600 mb-6">
           {category.description}
         </p>
+        {category.subcategories && (
+          <div className="flex justify-center space-x-2 mb-4">
+            <Link
+              href={`/category/${id}`}
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                !selectedSubcategory
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              全部
+            </Link>
+            {category.subcategories.map(sub => (
+              <Link
+                key={sub.id}
+                href={`/category/${id}?subcategory=${sub.id}`}
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  selectedSubcategory === sub.id
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                {sub.name}
+              </Link>
+            ))}
+          </div>
+        )}
         <div className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
           共 {posts.length} 篇文章
         </div>

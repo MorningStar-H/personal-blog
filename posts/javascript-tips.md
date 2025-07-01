@@ -2,6 +2,7 @@
 title: "JavaScript 实用技巧和最佳实践"
 date: "2024-02-15"
 excerpt: "分享一些实用的 JavaScript 技巧，帮助你写出更优雅、更高效的代码。"
+subcategory: 'csharp'
 category: "tech"
 ---
 

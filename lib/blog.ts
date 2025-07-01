@@ -12,6 +12,7 @@ export interface BlogPost {
   content: string
   readTime: string
   category: string
+  subcategory?: string
 }
 
 export interface Category {
@@ -19,6 +20,7 @@ export interface Category {
   name: string
   description: string
   icon: string
+  subcategories?: { id: string; name: string }[]
 }
 
 export const categories: Category[] = [
@@ -26,7 +28,12 @@ export const categories: Category[] = [
     id: 'tech',
     name: '技术文章',
     description: '技术见解、教程和最佳实践',
-    icon: '💻'
+    icon: '💻',
+    subcategories: [
+      { id: 'csharp', name: 'C#' },
+      { id: 'java', name: 'Java' },
+      { id: 'web3', name: 'Web3' }
+    ]
   },
   {
     id: 'tools',
@@ -70,6 +77,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
         content,
         readTime: calculateReadTime(content),
         category: data.category || 'life',
+        subcategory: data.subcategory,
       }
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1))
@@ -77,9 +85,18 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   return posts
 }
 
-export async function getBlogPostsByCategory(categoryId: string): Promise<BlogPost[]> {
+export async function getBlogPostsByCategory(
+  categoryId: string,
+  subcategoryId?: string | null
+): Promise<BlogPost[]> {
   const allPosts = await getBlogPosts()
-  return allPosts.filter(post => post.category === categoryId)
+  let filteredPosts = allPosts.filter(post => post.category === categoryId)
+
+  if (subcategoryId) {
+    filteredPosts = filteredPosts.filter(post => post.subcategory === subcategoryId)
+  }
+
+  return filteredPosts
 }
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
@@ -100,6 +117,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     content,
     readTime: calculateReadTime(content),
     category: data.category || 'life',
+    subcategory: data.subcategory,
   }
 }
 

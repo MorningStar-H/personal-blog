@@ -2,7 +2,8 @@
 title: "加密货币期货合约完整学习指南"
 date: "2025-07-01"
 excerpt: "Web3。"
-category: "bec"
+subcategory: 'csharp'
+category: "web3"
 ---
 # 加密货币期货合约完整学习指南
 

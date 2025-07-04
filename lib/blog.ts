@@ -32,26 +32,46 @@ export const categories: Category[] = [
     subcategories: [
       { id: 'csharp', name: 'C#' },
       { id: 'java', name: 'Java' },
-      { id: 'web3', name: 'Web3' }
+      { id: 'javascript', name: 'JavaScript' },
+      { id: 'frontend', name: '前端开发' }
     ]
   },
   {
     id: 'tools',
     name: '工具与配置',
     description: '开发工具、配置指南和效率提升',
-    icon: '🛠️'
+    icon: '🛠️',
+    subcategories: [
+      { id: 'development', name: '开发工具' }
+    ]
   },
   {
     id: 'demo',
     name: '代码演示',
     description: '实际代码示例和项目展示',
-    icon: '🚀'
+    icon: '🚀',
+    subcategories: [
+      { id: 'showcase', name: '项目展示' }
+    ]
+  },
+  {
+    id: 'web3',
+    name: 'Web3 & 加密货币',
+    description: '区块链技术、加密货币和 Web3 相关内容',
+    icon: '💰',
+    subcategories: [
+      { id: 'crypto', name: '加密货币' }
+    ]
   },
   {
     id: 'bec',
     name: '商务英语',
     description: '初级商务英语备考',
-    icon: '📖'
+    icon: '📖',
+    subcategories: [
+      { id: 'personal', name: '个人备考' },
+      { id: 'test', name: '测试练习' }
+    ]
   }
 ]
 

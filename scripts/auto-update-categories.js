@@ -63,35 +63,35 @@ function getExistingCategories() {
   }
 
   const content = fs.readFileSync(BLOG_TS_PATH, 'utf8');
-  const categoriesMatch = content.match(/export const categories: Category\[\] = \[([\s\S]*?)\]/);
+  const categoriesMatch = content.match(/export const categories: Category\[\] = \[([\s\S]*?)\]\s*$/m);
   
   if (!categoriesMatch) {
     return {};
   }
 
-  // 简单解析现有分类（实际项目中可能需要更复杂的解析）
+  // 更完善的解析逻辑
   const existing = {};
-  const categoryBlocks = categoriesMatch[1].split('},');
+  const categoryText = categoriesMatch[1];
   
-  categoryBlocks.forEach(block => {
-    const idMatch = block.match(/id: ['"]([^'"]+)['"]/);
-    const subcategoriesMatch = block.match(/subcategories: \[([\s\S]*?)\]/);
+  // 使用更精确的正则匹配每个分类对象
+  const categoryRegex = /\{\s*id:\s*['"]([^'"]+)['"],[\s\S]*?(?=\}\s*(?:,\s*\{|$))/g;
+  let categoryMatch;
+  
+  while ((categoryMatch = categoryRegex.exec(categoryText)) !== null) {
+    const categoryId = categoryMatch[1];
+    const categoryBlock = categoryMatch[0];
+    existing[categoryId] = [];
     
-    if (idMatch) {
-      const categoryId = idMatch[1];
-      existing[categoryId] = [];
-      
-      if (subcategoriesMatch) {
-        const subcategoryBlocks = subcategoriesMatch[1].split('},');
-        subcategoryBlocks.forEach(subBlock => {
-          const subIdMatch = subBlock.match(/id: ['"]([^'"]+)['"]/);
-          if (subIdMatch) {
-            existing[categoryId].push(subIdMatch[1]);
-          }
-        });
+    // 提取子分类
+    const subcategoriesMatch = categoryBlock.match(/subcategories:\s*\[([\s\S]*?)\]/);
+    if (subcategoriesMatch) {
+      const subcategoryRegex = /id:\s*['"]([^'"]+)['"]/g;
+      let subMatch;
+      while ((subMatch = subcategoryRegex.exec(subcategoriesMatch[1])) !== null) {
+        existing[categoryId].push(subMatch[1]);
       }
     }
-  });
+  }
 
   return existing;
 }
@@ -289,16 +289,25 @@ function main() {
     console.log('⚠️  请手动更新 lib/blog.ts 中的对应分类');
   }
   
-  // 生成页面
-  Object.keys(allCategories).forEach(categoryId => {
-    // 生成主分类页面
-    generateCategoryPage(categoryId);
-    
-    // 生成子分类页面
-    allCategories[categoryId].forEach(subcategoryId => {
-      generateCategoryPage(categoryId, subcategoryId);
+  // 检查是否存在动态路由 [id]
+  const dynamicRouteExists = fs.existsSync(path.join(APP_DIR, 'category', '[id]', 'page.tsx'));
+  
+  if (dynamicRouteExists) {
+    console.log('ℹ️  检测到动态路由 [id]，跳过静态路由生成以避免冲突');
+    console.log('💡 动态路由将自动处理所有分类页面');
+  } else {
+    // 只有在没有动态路由时才生成静态页面
+    console.log('📁 生成静态分类页面...');
+    Object.keys(allCategories).forEach(categoryId => {
+      // 生成主分类页面
+      generateCategoryPage(categoryId);
+      
+      // 生成子分类页面
+      allCategories[categoryId].forEach(subcategoryId => {
+        generateCategoryPage(categoryId, subcategoryId);
+      });
     });
-  });
+  }
   
   console.log('✅ 分类系统更新完成！');
 }

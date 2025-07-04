@@ -1,0 +1,57 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 博客文章管理规则
+
+## 文章存储位置
+所有博客文章都存储在 `posts/` 目录中，使用 `.md` 格式。
+
+## 文章前置信息 (Front Matter)
+每篇文章都应该包含以下前置信息：
+
+```yaml
+---
+title: "文章标题"
+date: "2024-01-01"
+excerpt: "文章摘要"
+category: "分类ID"
+subcategory: "子分类ID（可选）"
+---
+```
+
+## 分类系统
+在 [blog.ts](mdc:lib/blog.ts) 中定义了以下分类：
+
+### 主分类
+- `tech` - 技术文章 💻
+  - 子分类：`csharp`, `java`, `web3`
+- `tools` - 工具与配置 🛠️
+- `demo` - 代码演示 🚀
+- `bec` - 商务英语 📖
+
+## 核心博客功能
+[blog.ts](mdc:lib/blog.ts) 提供了以下核心功能：
+
+### 主要接口
+- `BlogPost` - 博客文章数据结构
+- `Category` - 分类数据结构
+
+### 主要函数
+- `getBlogPosts()` - 获取所有文章
+- `getBlogPostsByCategory()` - 按分类获取文章
+- `getBlogPost(slug)` - 获取单篇文章
+- `calculateReadTime()` - 计算阅读时间
+
+## 添加新文章流程
+1. 在 `posts/` 目录创建新的 `.md` 文件
+2. 添加正确的前置信息
+3. 编写 Markdown 内容
+4. 系统会自动识别并在网站上显示
+
+## 文章命名规范
+- 使用英文文件名，如 `my-new-post.md`
+- 文件名将作为 URL slug
+- 避免使用特殊字符和空格
+

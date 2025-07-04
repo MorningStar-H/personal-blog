@@ -1,0 +1,80 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 组件开发规则
+
+## 组件架构
+基于 Next.js 14 App Router 的组件结构。
+
+## 页面组件位置
+- `app/` - 所有页面组件
+- `app/layout.tsx` - 全局布局
+- `app/page.tsx` - 首页
+- `app/blog/` - 博客相关页面
+- `app/category/` - 分类页面
+- `app/about/` - 关于页面
+
+## 组件开发规范
+
+### TypeScript 要求
+- 所有组件必须使用 TypeScript
+- 为 props 定义明确的接口
+- 使用 [blog.ts](mdc:lib/blog.ts) 中定义的类型
+
+### 组件命名
+- 使用 PascalCase 命名组件
+- 文件名使用 kebab-case
+- 页面组件使用 `page.tsx`
+- 布局组件使用 `layout.tsx`
+
+### 样式规范
+- 使用 Tailwind CSS 类名
+- 避免内联样式
+- 响应式设计优先
+- 参考 [globals.css](mdc:app/globals.css) 了解全局样式
+
+## 博客相关组件模式
+
+### 文章列表组件
+应该使用 `getBlogPosts()` 获取文章数据：
+
+```typescript
+import { getBlogPosts, BlogPost } from '@/lib/blog'
+
+export default async function BlogList() {
+  const posts = await getBlogPosts()
+  // 渲染逻辑
+}
+```
+
+### 单篇文章组件
+使用 `getBlogPost(slug)` 获取特定文章：
+
+```typescript
+import { getBlogPost } from '@/lib/blog'
+
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  const post = await getBlogPost(params.slug)
+  // 渲染逻辑
+}
+```
+
+### 分类组件
+使用 `getBlogPostsByCategory()` 获取分类文章：
+
+```typescript
+import { getBlogPostsByCategory } from '@/lib/blog'
+
+export default async function CategoryPage({ params }: { params: { category: string } }) {
+  const posts = await getBlogPostsByCategory(params.category)
+  // 渲染逻辑
+}
+```
+
+## 服务端组件优先
+- 优先使用服务端组件
+- 只在需要交互时使用客户端组件
+- 使用 `"use client"` 指令标记客户端组件
+

@@ -2,6 +2,7 @@
 title: "Cursor 规则使用指南"
 date: "2025-06-30"
 excerpt: "一份完整的 Cursor 规则配置指南，帮助你更好地使用 Cursor AI 代码编辑器"
+subcategory: 'development'
 category: "tools"
 ---
 

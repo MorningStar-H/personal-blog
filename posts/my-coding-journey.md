@@ -2,6 +2,7 @@
 title: "我的编程之路：从小白到现在"
 date: "2024-04-05"
 excerpt: "回顾我学习编程的经历，分享一些心得体会和成长感悟。"
+subcategory: 'personal'
 category: "bec"
 ---
 

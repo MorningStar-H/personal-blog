@@ -1,0 +1,172 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 开发指南
+
+## 项目概述
+这是一个现代化的个人博客项目，专注于技术文章分享和内容管理。
+
+## 技术栈
+- **前端框架**: Next.js 14 (App Router)
+- **编程语言**: TypeScript
+- **样式框架**: Tailwind CSS
+- **内容管理**: Markdown + gray-matter
+- **部署**: 支持静态导出
+
+## 快速开始
+
+### 开发环境设置
+```bash
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+
+# 构建项目
+npm run build
+
+# 启动生产服务器
+npm start
+
+# 自动更新分类系统
+npm run update-categories
+```
+
+### 开发最佳实践
+
+#### 1. 代码质量
+- 使用 TypeScript 进行类型检查
+- 遵循 ESLint 规则
+- 使用 Prettier 格式化代码
+
+#### 2. 组件开发
+- 优先使用服务端组件
+- 保持组件的单一职责
+- 使用 [blog.ts](mdc:lib/blog.ts) 中定义的类型
+
+#### 3. 样式开发
+- 使用 Tailwind CSS 实用类
+- 保持响应式设计
+- 参考 [globals.css](mdc:app/globals.css) 了解全局样式
+
+#### 4. 内容管理
+- 所有文章存储在 `posts/` 目录
+- 使用标准的 Markdown 格式
+- 正确设置文章前置信息
+
+#### 5. 自动化工作流
+- 添加新文章后运行 `npm run update-categories`
+- 系统会自动检测新分类并生成相应页面
+- 根据提示手动更新 [blog.ts](mdc:lib/blog.ts) 中的分类定义
+
+## 常见开发场景
+
+### 添加新页面
+1. 在 `app/` 目录创建新的路由文件夹
+2. 添加 `page.tsx` 文件
+3. 可选：添加 `layout.tsx` 用于特定布局
+
+### 添加新文章（推荐流程）
+1. 在 `posts/` 目录创建新的 `.md` 文件
+2. 设置正确的前置信息（包括 category 和 subcategory）
+3. 运行 `npm run update-categories` 自动化处理
+4. 根据提示更新 [blog.ts](mdc:lib/blog.ts) 中的分类定义
+5. 验证新生成的分类页面正常工作
+
+### 修改博客功能
+1. 查看 [blog.ts](mdc:lib/blog.ts) 了解现有功能
+2. 修改或扩展博客相关函数
+3. 更新相关组件以使用新功能
+4. 如果涉及分类系统，运行自动化脚本
+
+### 添加新样式
+1. 优先使用 Tailwind CSS 类名
+2. 如需自定义样式，在 [globals.css](mdc:app/globals.css) 中添加
+3. 确保样式支持响应式设计
+
+## 自动化功能
+
+### 分类系统自动化
+项目提供了自动化的分类管理系统：
+
+#### 功能特点
+- 🔍 自动检测新文章的分类信息
+- 📁 自动生成分类和子分类页面
+- 🔗 自动创建正确的路由结构
+- ⚠️ 智能提示需要手动更新的部分
+
+#### 使用方法
+```bash
+# 添加新文章后运行
+npm run update-categories
+```
+
+#### 自动化流程
+1. 扫描 `posts/` 目录中的所有文章
+2. 解析文章的前置信息
+3. 检测新的分类和子分类
+4. 生成对应的页面文件
+5. 提示需要手动更新的分类定义
+
+### 自动化脚本位置
+- 主脚本：[auto-update-categories.js](mdc:scripts/auto-update-categories.js)
+- 使用指南：[auto-update-usage.mdc](mdc:.cursor/rules/auto-update-usage.mdc)
+
+## 调试技巧
+
+### 开发工具
+- 使用 React DevTools 调试组件
+- 使用 Next.js DevTools 分析性能
+- 使用浏览器控制台检查错误
+
+### 常见问题排查
+1. **样式不生效**: 检查 Tailwind 配置和类名
+2. **博客文章不显示**: 检查 Markdown 前置信息格式
+3. **类型错误**: 确保使用正确的 TypeScript 类型
+4. **分类页面404**: 运行 `npm run update-categories` 生成缺失页面
+5. **自动化脚本失败**: 检查文章前置信息格式和文件权限
+
+## 部署指南
+项目支持多种部署方式：
+- Vercel（推荐）
+- Netlify
+- 静态导出到任何 CDN
+
+### 部署前检查
+1. 确保所有分类页面已生成
+2. 运行 `npm run build` 检查构建错误
+3. 验证所有路由正常工作
+
+## 项目结构最佳实践
+
+### 文件组织
+```
+├── app/                    # Next.js 14 App Router
+│   ├── category/          # 分类页面（自动生成）
+│   ├── blog/              # 博客文章页面
+│   └── ...
+├── lib/                   # 工具函数
+│   └── blog.ts            # 博客核心逻辑
+├── posts/                 # 文章 Markdown 文件
+├── scripts/               # 自动化脚本
+└── .cursor/rules/         # Cursor 规则配置
+```
+
+### 命名约定
+- 文件名：使用 kebab-case
+- 组件名：使用 PascalCase
+- 分类ID：使用 kebab-case
+- 路由：使用 kebab-case
+
+## 相关文档
+- [项目结构指南](mdc:.cursor/rules/project-structure.mdc)
+- [博客文章管理](mdc:.cursor/rules/blog-posts.mdc)
+- [组件开发规则](mdc:.cursor/rules/components.mdc)
+- [样式和UI规则](mdc:.cursor/rules/styling.mdc)
+- [自动更新分类规则](mdc:.cursor/rules/auto-update-categories.mdc)
+- [自动化使用指南](mdc:.cursor/rules/auto-update-usage.mdc)
+
+

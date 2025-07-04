@@ -2,6 +2,7 @@
 title: "Hello World - 我的第一篇博客"
 date: "2024-01-01"
 excerpt: "欢迎来到我的博客！这是我的第一篇文章，分享一下创建这个博客的想法和目标。"
+subcategory: 'personal'
 category: "bec"
 ---
 

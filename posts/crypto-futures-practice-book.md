@@ -2,7 +2,7 @@
 title: "加密货币期货交易练习册"
 date: "2025-07-01"
 excerpt: "Web3。"
-subcategory: 'csharp'
+subcategory: 'crypto'
 category: "web3"
 ---
 # 加密货币期货交易练习册

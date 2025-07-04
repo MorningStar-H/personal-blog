@@ -2,6 +2,7 @@
 title: "使用 Next.js 构建现代化博客的完整指南"
 date: "2024-01-20"
 excerpt: "详细介绍如何使用 Next.js、React 和 Tailwind CSS 从零开始构建一个现代化的个人博客网站。"
+subcategory: 'frontend'
 category: "tech"
 ---
 

@@ -1,0 +1,165 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Cursor Rules 完整指南
+
+## 🎯 总览
+
+您的个人博客项目现在配备了完整的 Cursor 规则系统，包含：
+
+### 🔧 核心规则
+- [项目结构指南](mdc:.cursor/rules/project-structure.mdc) - 项目架构和文件组织
+- [博客文章管理](mdc:.cursor/rules/blog-posts.mdc) - 文章编写和分类规范
+- [组件开发规则](mdc:.cursor/rules/components.mdc) - React/Next.js 组件开发
+- [样式和UI规则](mdc:.cursor/rules/styling.mdc) - Tailwind CSS 使用规范
+- [开发指南](mdc:.cursor/rules/development-guide.mdc) - 完整的开发流程
+
+### 🚀 自动化功能
+- [自动更新分类规则](mdc:.cursor/rules/auto-update-categories.mdc) - 智能分类系统
+- [自动化使用指南](mdc:.cursor/rules/auto-update-usage.mdc) - 详细使用说明
+- [自动化脚本](mdc:scripts/auto-update-categories.js) - 核心自动化逻辑
+
+## 🎉 新增功能亮点
+
+### 自动分类管理
+当您添加新文章时，系统会自动：
+- ✅ 检测新分类和子分类
+- ✅ 生成对应的页面文件
+- ✅ 创建完整的路由结构
+- ✅ 提供智能提示和建议
+
+### 实际演示
+刚才的测试运行显示：
+```
+📊 发现的分类: [ 'tech', 'demo', 'tools', 'web3', 'bec' ]
+📚 现有分类: [ 'tech', 'java', 'web3' ]
+🆕 发现新分类: [ 'demo', 'tools', 'bec' ]
+🆕 发现新子分类: [
+  { category: 'tech', subcategory: 'csharp' },
+  { category: 'tech', subcategory: 'javascript' },
+  { category: 'tech', subcategory: 'frontend' },
+  { category: 'web3', subcategory: 'crypto' }
+]
+✅ 已创建页面: app/category/tech/page.tsx
+✅ 已创建页面: app/category/tech/csharp/page.tsx
+... (共生成了 12 个页面)
+```
+
+## 📋 日常使用流程
+
+### 1. 添加新文章
+```bash
+# 1. 创建新文章
+# posts/my-new-article.md
+---
+title: "我的新文章"
+date: "2024-01-15"
+excerpt: "文章简介"
+category: "tech"
+subcategory: "nextjs"
+---
+
+# 2. 运行自动化
+npm run update-categories
+```
+
+### 2. AI 助手自动理解
+现在当您与 AI 对话时：
+```
+💬 您: "帮我优化首页的布局"
+🤖 AI: 会自动知道查看 app/page.tsx 和使用 Tailwind CSS
+
+💬 您: "添加一个新的分类页面"
+🤖 AI: 会自动知道运行 npm run update-categories 和更新 lib/blog.ts
+```
+
+### 3. 智能代码建议
+- 📝 编写组件时自动建议 TypeScript 类型
+- 🎨 样式编写时自动建议 Tailwind 类名
+- 📚 文章管理时自动建议正确的分类格式
+
+## 🔄 完整的自动化工作流
+
+```mermaid
+graph TD
+    A[添加新文章] --> B[运行 npm run update-categories]
+    B --> C[脚本扫描文章]
+    C --> D[检测新分类]
+    D --> E[生成页面文件]
+    E --> F[提示手动更新]
+    F --> G[更新 lib/blog.ts]
+    G --> H[验证页面正常]
+    H --> I[开发完成]
+```
+
+## 💡 智能提示系统
+
+### 自动检测
+- 🔍 新分类和子分类
+- 📁 缺失的页面文件
+- 🔗 需要的路由结构
+
+### 智能建议
+- ⚠️ 需要手动更新的文件
+- 📝 推荐的分类格式
+- 🎯 最佳实践建议
+
+## 🎯 效果展示
+
+### 生成的页面结构
+```
+app/category/
+├── tech/
+│   ├── page.tsx
+│   ├── csharp/page.tsx
+│   ├── javascript/page.tsx
+│   └── frontend/page.tsx
+├── demo/
+│   ├── page.tsx
+│   └── showcase/page.tsx
+├── tools/
+│   ├── page.tsx
+│   └── development/page.tsx
+└── ...
+```
+
+### 页面功能
+- 📊 自动文章列表
+- 🏷️ 分类和子分类导航
+- 📱 响应式设计
+- 🔗 SEO 优化的路由
+
+## 🎊 总结
+
+您的博客项目现在拥有：
+
+### ✅ 完整的规则系统
+- 📚 7个核心规则文件
+- 🎯 覆盖所有开发场景
+- 🔄 自动化工作流程
+
+### ✅ 智能AI助手
+- 🤖 自动理解项目结构
+- 💡 智能代码建议
+- 🎯 精准问题解答
+
+### ✅ 自动化工具
+- 🚀 一键分类管理
+- 📁 自动页面生成
+- ⚠️ 智能提示系统
+
+### ✅ 现代化开发体验
+- 🎨 统一的代码风格
+- 📝 清晰的文档指导
+- 🔧 高效的开发流程
+
+## 🎯 下一步
+
+1. **开始使用** - 尝试添加新文章并运行自动化脚本
+2. **自定义规则** - 根据需要调整规则文件
+3. **扩展功能** - 基于现有规则添加新功能
+4. **团队协作** - 与团队成员分享规则系统
+
+祝您开发愉快！🚀

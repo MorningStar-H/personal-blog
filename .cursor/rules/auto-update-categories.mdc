@@ -1,0 +1,175 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 自动更新分类规则
+
+## 概述
+当添加新文章时，根据文章分类自动更新前端页面和导航结构。
+
+## 自动化流程
+
+### 1. 新文章检测
+当在 `posts/` 目录添加新的 `.md` 文件时，系统应该：
+- 解析文章的前置信息 (Front Matter)
+- 提取 `category` 和 `subcategory` 字段
+- 检查是否为新的分类或子分类
+
+### 2. 分类系统更新
+参考 [blog.ts](mdc:lib/blog.ts) 中的 `categories` 数组：
+
+#### 新主分类处理
+如果文章使用了新的主分类，需要：
+```typescript
+// 在 lib/blog.ts 中添加新分类
+{
+  id: 'new-category',
+  name: '新分类名称',
+  description: '分类描述',
+  icon: '🆕',
+  subcategories: []
+}
+```
+
+#### 新子分类处理
+如果文章使用了新的子分类，需要：
+```typescript
+// 在对应主分类的 subcategories 中添加
+{ id: 'new-subcategory', name: '新子分类名称' }
+```
+
+### 3. 前端页面自动更新
+
+#### 导航菜单更新
+- 检查 [layout.tsx](mdc:app/layout.tsx) 中的导航结构
+- 自动添加新分类的导航链接
+- 确保导航菜单包含新分类
+
+#### 分类页面创建
+对于新的主分类，需要：
+1. 创建 `app/category/[category]/page.tsx`
+2. 创建 `app/category/[category]/[subcategory]/page.tsx` (如有子分类)
+3. 使用标准的分类页面模板
+
+### 4. 页面模板
+
+#### 主分类页面模板
+```typescript
+// app/category/[category]/page.tsx
+import { getBlogPostsByCategory, categories } from '@/lib/blog'
+
+export default async function CategoryPage({ 
+  params 
+}: { 
+  params: { category: string } 
+}) {
+  const posts = await getBlogPostsByCategory(params.category)
+  const category = categories.find(c => c.id === params.category)
+  
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">
+        {category?.icon} {category?.name}
+      </h1>
+      <p className="text-gray-600 mb-8">{category?.description}</p>
+      
+      {/* 文章列表 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map(post => (
+          <div key={post.slug} className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
+            <p className="text-gray-600 mb-4">{post.excerpt}</p>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-500">{post.date}</span>
+              <span className="text-sm text-blue-600">{post.readTime}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+```
+
+#### 子分类页面模板
+```typescript
+// app/category/[category]/[subcategory]/page.tsx
+import { getBlogPostsByCategory, categories } from '@/lib/blog'
+
+export default async function SubcategoryPage({ 
+  params 
+}: { 
+  params: { category: string; subcategory: string } 
+}) {
+  const posts = await getBlogPostsByCategory(params.category, params.subcategory)
+  const category = categories.find(c => c.id === params.category)
+  const subcategory = category?.subcategories?.find(s => s.id === params.subcategory)
+  
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <nav className="mb-8">
+        <a href={`/category/${params.category}`} className="text-blue-600 hover:underline">
+          {category?.name}
+        </a>
+        <span className="mx-2">/</span>
+        <span className="text-gray-900">{subcategory?.name}</span>
+      </nav>
+      
+      <h1 className="text-3xl font-bold mb-8">{subcategory?.name}</h1>
+      
+      {/* 文章列表 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map(post => (
+          <div key={post.slug} className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
+            <p className="text-gray-600 mb-4">{post.excerpt}</p>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-500">{post.date}</span>
+              <span className="text-sm text-blue-600">{post.readTime}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+```
+
+### 5. 自动化检查清单
+添加新文章时的自动化步骤：
+
+1. **解析文章前置信息**
+   - 检查 `category` 字段
+   - 检查 `subcategory` 字段（如果存在）
+
+2. **验证分类是否存在**
+   - 在 [blog.ts](mdc:lib/blog.ts) 中检查分类定义
+   - 如果不存在，提示需要添加新分类
+
+3. **创建必要的页面文件**
+   - 检查 `app/category/[category]/` 目录是否存在
+   - 检查子分类页面是否存在
+   - 使用标准模板创建缺失的页面
+
+4. **更新导航结构**
+   - 检查主导航是否包含新分类
+   - 更新分类导航菜单
+   - 确保所有链接正确工作
+
+5. **验证功能**
+   - 测试新分类页面是否正常显示
+   - 确保文章正确归类
+   - 检查导航链接是否工作
+
+### 6. 最佳实践
+- 使用一致的分类命名规范
+- 为新分类提供合适的图标和描述
+- 确保页面样式与整体设计保持一致
+- 定期审查和优化分类结构
+
+## 相关文件
+- [blog.ts](mdc:lib/blog.ts) - 分类系统定义
+- [layout.tsx](mdc:app/layout.tsx) - 导航结构
+- [page.tsx](mdc:app/page.tsx) - 首页分类展示
+

@@ -2,6 +2,7 @@
 title: "高效的代码工作空间配置"
 date: "2024-03-10"
 excerpt: "分享如何配置一个高效的开发环境，包括编辑器设置、插件推荐和工作流优化。"
+subcategory: 'development'
 category: "tools"
 ---
 

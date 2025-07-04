@@ -2,6 +2,7 @@
 title: "美化后的代码显示效果演示"
 date: "2025-01-30"
 excerpt: "展示博客中各种编程语言的代码块美化效果，包括语法高亮、行号显示等功能。"
+subcategory: 'showcase'
 category: "demo"
 ---
 

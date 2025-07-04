@@ -1,0 +1,76 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 样式和UI规则
+
+## 样式框架
+使用 Tailwind CSS 作为主要样式框架。
+
+## 配置文件
+- [tailwind.config.js](mdc:tailwind.config.js) - Tailwind 配置
+- [postcss.config.js](mdc:postcss.config.js) - PostCSS 配置
+- [app/globals.css](mdc:app/globals.css) - 全局样式
+
+## 样式规范
+
+### Tailwind CSS 使用原则
+- 优先使用 Tailwind 实用类
+- 避免自定义 CSS，除非必要
+- 使用 `@apply` 指令重用样式模式
+- 利用 Tailwind 的响应式修饰符
+
+### 响应式设计
+- 移动优先的设计方法
+- 使用 Tailwind 的响应式断点：
+  - `sm:` - 640px+
+  - `md:` - 768px+
+  - `lg:` - 1024px+
+  - `xl:` - 1280px+
+
+### 颜色系统
+- 使用 Tailwind 的默认颜色调色板
+- 保持一致的颜色使用
+- 考虑深色模式支持
+
+## Typography 插件
+项目使用 `@tailwindcss/typography` 插件：
+- 用于 Markdown 内容的样式
+- 使用 `prose` 类名包装文章内容
+- 支持深色模式变体 `prose-invert`
+
+## 组件样式模式
+
+### 卡片组件
+```typescript
+<div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+  {/* 卡片内容 */}
+</div>
+```
+
+### 按钮组件
+```typescript
+<button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+  {/* 按钮文本 */}
+</button>
+```
+
+### 文章内容
+```typescript
+<div className="prose max-w-none">
+  {/* Markdown 内容 */}
+</div>
+```
+
+## 性能优化
+- 使用 Tailwind 的 purge 功能移除未使用的样式
+- 避免过度嵌套的样式
+- 使用 CSS 变量处理动态样式
+
+## 可访问性
+- 确保足够的颜色对比度
+- 使用语义化的 HTML 元素
+- 为交互元素提供焦点状态
+- 支持键盘导航
+
